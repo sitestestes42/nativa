@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Açaí premium, cremes, sorvetes e sobremesas montados do seu jeito." />
+  <title>NATIVA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --background:#FFF9F1;
+      --surface:#FFFFFF;
+      --dark:#24150E;
+      --text:#39231A;
+      --muted:#806C61;
+      --purple:#6D2BB8;
+      --purple-dark:#4B177F;
+      --green:#4C9B48;
+      --pink:#E85B8A;
+      --orange:#F5A33B;
+      --border:rgba(57,35,26,.10);
+      --shadow:0 24px 80px rgba(75,23,127,.12);
+      --shadow-soft:0 16px 40px rgba(57,35,26,.08);
+      --radius:28px;
+      --container:1220px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%,rgba(232,91,138,.10),transparent 28%),
+        radial-gradient(circle at 90% 12%,rgba(109,43,184,.10),transparent 28%),
+        var(--background);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    body.menu-open{overflow:hidden}
+    img{display:block;width:100%;height:100%;object-fit:cover}
+    a{text-decoration:none;color:inherit}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    section{scroll-margin-top:96px}
+    .container{width:min(calc(100% - 40px),var(--container));margin:auto}
+    .eyebrow{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:8px 12px;border:1px solid var(--border);
+      background:rgba(255,255,255,.72);
+      border-radius:999px;font-size:12px;font-weight:800;
+      letter-spacing:.12em;text-transform:uppercase;color:var(--purple);
+    }
+    .section-head{display:flex;justify-content:space-between;gap:28px;align-items:end;margin-bottom:34px}
+    .section-head h2,.section-copy h2{
+      margin:12px 0 0;font:800 clamp(34px,5vw,64px)/.98 Manrope,sans-serif;
+      letter-spacing:-.045em;color:var(--dark);
+    }
+    .section-head p{max-width:520px;color:var(--muted);line-height:1.7;margin:0}
+    .btn{
+      border:none;border-radius:999px;padding:15px 22px;
+      font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      transition:.25s ease;
+    }
+    .btn-primary{
+      color:white;background:linear-gradient(135deg,var(--purple),var(--pink));
+      box-shadow:0 12px 30px rgba(109,43,184,.22);
+    }
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(109,43,184,.30)}
+    .btn-secondary{background:white;color:var(--dark);border:1px solid var(--border)}
+    .btn-secondary:hover{transform:translateY(-2px);background:#fffdf9}
+    .btn-dark{background:var(--dark);color:white}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    header{
+      position:sticky;top:0;z-index:1000;
+      transition:.25s ease;border-bottom:1px solid transparent;
+    }
+    header.scrolled{
+      background:rgba(255,249,241,.82);
+      backdrop-filter:blur(18px);
+      border-color:var(--border);
+      box-shadow:0 8px 28px rgba(57,35,26,.05);
+    }
+    .nav{
+      height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+    }
+    .brand{display:flex;align-items:center;gap:11px;font:800 22px Manrope,sans-serif;color:var(--dark)}
+    .brand-mark{
+      width:42px;height:42px;border-radius:15px;
+      display:grid;place-items:center;color:white;
+      background:
+        radial-gradient(circle at 30% 25%,rgba(255,255,255,.55),transparent 15%),
+        linear-gradient(135deg,var(--purple),var(--pink) 62%,var(--orange));
+      box-shadow:0 10px 24px rgba(109,43,184,.22);
+      transform:rotate(-6deg);
+    }
+    .brand-mark span{transform:rotate(6deg);font-size:20px}
+    .nav-links{display:flex;align-items:center;gap:26px;font-size:14px;font-weight:700}
+    .nav-links a{position:relative;color:#5a453b}
+    .nav-links a:after{content:"";position:absolute;left:0;right:100%;bottom:-8px;height:2px;background:var(--purple);transition:.25s}
+    .nav-links a:hover:after{right:0}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .menu-btn{
+      display:none;width:46px;height:46px;border-radius:50%;border:1px solid var(--border);
+      background:white;place-items:center;
+    }
+
+    .hero{padding:54px 0 84px;position:relative}
+    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;align-items:center;gap:42px}
+    .hero h1{
+      font:800 clamp(58px,7vw,104px)/.88 Manrope,sans-serif;
+      letter-spacing:-.065em;margin:18px 0 24px;color:var(--dark);
+      max-width:760px;
+    }
+    .hero h1 .accent{
+      background:linear-gradient(135deg,var(--purple),var(--pink),var(--orange));
+      background-clip:text;-webkit-background-clip:text;color:transparent;
+    }
+    .hero-copy>p{font-size:18px;line-height:1.75;color:var(--muted);max-width:660px;margin:0 0 28px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+    .badge{
+      background:rgba(255,255,255,.74);border:1px solid var(--border);
+      border-radius:999px;padding:10px 13px;font-size:13px;font-weight:700;color:#654d42;
+    }
+    .hero-visual{position:relative;min-height:610px}
+    .hero-main{
+      position:absolute;inset:22px 0 42px 44px;border-radius:44px;overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .hero-main:after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,transparent 50%,rgba(36,21,14,.18));
+    }
+    .floating-card{
+      position:absolute;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,.72);box-shadow:0 18px 45px rgba(36,21,14,.14);
+      border-radius:22px;padding:15px 16px;z-index:3;
+    }
+    .floating-card.top{right:-14px;top:0}
+    .floating-card.bottom{left:0;bottom:0}
+    .floating-card strong{display:block;font:800 15px Manrope,sans-serif}
+    .floating-card span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+    .orb{position:absolute;border-radius:50%;filter:blur(1px);opacity:.75}
+    .orb.one{width:120px;height:120px;background:rgba(245,163,59,.22);right:-38px;bottom:72px}
+    .orb.two{width:90px;height:90px;background:rgba(76,155,72,.16);left:15px;top:60px}
+
+    .categories,.favorites,.builder,.about,.reviews,.gallery,.location{padding:92px 0}
+    .category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .category-card{
+      position:relative;height:380px;border-radius:28px;overflow:hidden;
+      box-shadow:var(--shadow-soft);isolation:isolate;
+    }
+    .category-card img{transition:transform .55s ease}
+    .category-card:after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,transparent 40%,rgba(28,13,24,.78));
+      z-index:1;
+    }
+    .category-card:hover img{transform:scale(1.06)}
+    .category-content{position:absolute;z-index:2;left:22px;right:22px;bottom:22px;color:white}
+    .category-content h3{font:800 28px Manrope,sans-serif;margin:0 0 6px}
+    .category-content p{font-size:14px;opacity:.82;margin:0 0 15px}
+    .text-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
+
+    .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .product{
+      background:white;border:1px solid var(--border);border-radius:28px;overflow:hidden;
+      box-shadow:0 10px 35px rgba(57,35,26,.05);transition:.3s ease;
+    }
+    .product:hover{transform:translateY(-6px);box-shadow:var(--shadow-soft)}
+    .product-media{height:300px;position:relative;overflow:hidden}
+    .product-media img{transition:transform .45s ease}
+    .product:hover .product-media img{transform:scale(1.045)}
+    .product-tag{
+      position:absolute;top:16px;left:16px;background:white;color:var(--purple);
+      padding:8px 11px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+    }
+    .product-body{padding:20px}
+    .product-body h3{margin:0 0 7px;font:800 20px Manrope,sans-serif}
+    .product-body p{margin:0;color:var(--muted);font-size:14px;line-height:1.55;min-height:44px}
+    .product-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}
+    .price{font:800 21px Manrope,sans-serif;color:var(--purple-dark)}
+    .mini-btn{border:none;background:#f6effc;color:var(--purple-dark);font-weight:800;border-radius:999px;padding:11px 15px}
+    .mini-btn:hover{background:#efe2fa}
+
+    .builder-wrap{
+      background:var(--dark);color:white;border-radius:42px;padding:34px;
+      box-shadow:0 34px 90px rgba(36,21,14,.20);
+      position:relative;overflow:hidden;
+    }
+    .builder-wrap:before{
+      content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+      background:radial-gradient(circle,rgba(232,91,138,.24),transparent 68%);
+      right:-140px;top:-120px;
+    }
+    .builder-head{position:relative;z-index:2;display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:28px}
+    .builder-head h2{font:800 clamp(38px,5vw,62px)/1 Manrope,sans-serif;margin:10px 0 0;letter-spacing:-.045em}
+    .builder-head p{max-width:520px;color:#d9cbc2;line-height:1.7}
+    .builder-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+    .steps{display:grid;gap:14px}
+    .step{
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);
+      border-radius:24px;padding:20px;
+    }
+    .step-title{display:flex;align-items:center;gap:12px;font:800 17px Manrope,sans-serif;margin-bottom:14px}
+    .step-num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:white;color:var(--dark);font-size:12px}
+    .options{display:flex;gap:9px;flex-wrap:wrap}
+    .option{
+      padding:11px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);color:white;font-size:13px;font-weight:700;
+    }
+    .option.active{
+      background:white;color:var(--dark);border-color:white;
+      box-shadow:0 8px 22px rgba(0,0,0,.15);
+    }
+    .order-summary{
+      background:white;color:var(--text);border-radius:28px;padding:24px;align-self:start;position:sticky;top:104px;
+    }
+    .order-summary h3{font:800 24px Manrope,sans-serif;margin:0 0 16px}
+    .summary-row{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px}
+    .summary-row span:first-child{color:var(--muted)}
+    .summary-list{font-size:13px;line-height:1.7;color:#5e493f}
+    .estimate{display:flex;justify-content:space-between;align-items:end;margin:20px 0}
+    .estimate small{display:block;color:var(--muted);margin-bottom:4px}
+    .estimate strong{font:800 28px Manrope,sans-serif;color:var(--purple-dark)}
+    .order-summary .btn{width:100%}
+
+    .visual-banner{
+      margin:24px auto 0;width:min(calc(100% - 40px),var(--container));
+      min-height:520px;border-radius:42px;overflow:hidden;position:relative;box-shadow:var(--shadow);
+    }
+    .visual-banner:after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(90deg,rgba(36,21,14,.85),rgba(36,21,14,.35) 48%,transparent);
+    }
+    .visual-banner img{position:absolute;inset:0}
+    .banner-copy{position:relative;z-index:2;color:white;padding:70px;max-width:660px}
+    .banner-copy h2{font:800 clamp(44px,6vw,78px)/.95 Manrope,sans-serif;letter-spacing:-.05em;margin:0 0 18px}
+    .banner-copy p{color:#f1e6df;line-height:1.7;font-size:17px;max-width:520px}
+
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+    .about-photo{height:590px;border-radius:36px;overflow:hidden;box-shadow:var(--shadow-soft)}
+    .section-copy p{font-size:17px;line-height:1.8;color:var(--muted);max-width:620px}
+    .benefit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+    .benefit{
+      background:white;border:1px solid var(--border);border-radius:22px;padding:20px;
+      min-height:170px;
+    }
+    .benefit-icon{font-size:26px}
+    .benefit h3{font:800 16px Manrope,sans-serif;margin:14px 0 6px}
+    .benefit p{font-size:13px;line-height:1.55;margin:0;color:var(--muted)}
+
+    .reviews{background:#fffdf9}
+    .review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .review{
+      background:white;border:1px solid var(--border);border-radius:26px;padding:24px;
+      box-shadow:0 12px 30px rgba(57,35,26,.04);
+    }
+    .stars{letter-spacing:3px;color:#f0a535;font-size:16px}
+    .review blockquote{margin:16px 0 22px;font-size:16px;line-height:1.7;color:#4d392f}
+    .review-person{display:flex;align-items:center;gap:12px}
+    .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ead8f8,#fde1eb);display:grid;place-items:center;font-weight:900;color:var(--purple)}
+    .review-person strong{font-size:14px}
+    .review-person span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+
+    .gallery-grid{
+      display:grid;grid-template-columns:1.1fr .9fr .9fr;grid-template-rows:300px 300px;gap:14px;
+    }
+    .gallery-item{border-radius:24px;overflow:hidden;position:relative}
+    .gallery-item:first-child{grid-row:1/3}
+    .gallery-item img{transition:.5s ease}
+    .gallery-item:hover img{transform:scale(1.05)}
+    .gallery-item:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 65%,rgba(36,21,14,.28));opacity:.7}
+
+    .location-grid{
+      display:grid;grid-template-columns:.82fr 1.18fr;background:white;border:1px solid var(--border);
+      border-radius:34px;overflow:hidden;box-shadow:var(--shadow-soft)
+    }
+    .location-copy{padding:36px}
+    .location-copy h2{font:800 40px/1 Manrope,sans-serif;margin:10px 0 20px}
+    .location-line{padding:15px 0;border-bottom:1px solid var(--border)}
+    .location-line small{display:block;color:var(--muted);margin-bottom:5px}
+    .location-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+    .map{
+      min-height:470px;background:
+        linear-gradient(rgba(109,43,184,.05),rgba(109,43,184,.05)),
+        url("https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1400&q=85") center/cover;
+      position:relative;
+    }
+    .map-pin{
+      position:absolute;left:53%;top:47%;transform:translate(-50%,-50%);
+      width:64px;height:64px;border-radius:50% 50% 50% 0;rotate:-45deg;
+      background:linear-gradient(135deg,var(--purple),var(--pink));
+      box-shadow:0 18px 40px rgba(109,43,184,.28);
+    }
+    .map-pin:after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:white;left:23px;top:23px}
+
+    .final-cta{padding:40px 0 86px}
+    .cta-box{
+      border-radius:40px;padding:70px 28px;text-align:center;color:white;
+      background:
+        radial-gradient(circle at 0 0,rgba(245,163,59,.36),transparent 25%),
+        radial-gradient(circle at 100% 100%,rgba(232,91,138,.35),transparent 25%),
+        linear-gradient(135deg,var(--purple-dark),var(--purple));
+      box-shadow:0 30px 80px rgba(75,23,127,.22);
+    }
+    .cta-box h2{font:800 clamp(48px,7vw,88px)/.95 Manrope,sans-serif;letter-spacing:-.055em;margin:0 0 14px}
+    .cta-box p{font-size:17px;color:#efe5f7;margin:0 0 26px}
+    .cta-box .btn{font-size:17px;padding:18px 30px;background:white;color:var(--purple-dark)}
+
+    footer{background:#1e120d;color:white;padding:52px 0 28px}
+    .footer-grid{display:grid;grid-template-columns:1.3fr repeat(3,.7fr);gap:28px}
+    .footer-brand p{color:#bdaa9f;max-width:350px;line-height:1.7}
+    .footer-col h4{font:800 14px Manrope,sans-serif;margin:0 0 16px}
+    .footer-col a,.footer-col span{display:block;color:#bdaa9f;font-size:13px;margin:10px 0}
+    .footer-bottom{margin-top:38px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#8f7c72;font-size:12px}
+
+    .whatsapp-float{
+      position:fixed;right:22px;bottom:22px;z-index:1200;width:58px;height:58px;border-radius:50%;
+      background:#25D366;color:white;display:grid;place-items:center;font-size:26px;
+      box-shadow:0 15px 35px rgba(37,211,102,.30);transition:.25s;
+    }
+    .whatsapp-float:hover{transform:translateY(-4px) scale(1.03)}
+    .reveal{opacity:0;transform:translateY(18px);transition:.65s cubic-bezier(.2,.7,.2,1)}
+    .reveal.visible{opacity:1;transform:none}
+
+    .loader{
+      position:fixed;inset:0;background:var(--background);z-index:3000;display:grid;place-items:center;
+      transition:opacity .5s,visibility .5s;
+    }
+    .loader.hide{opacity:0;visibility:hidden}
+    .loader-mark{width:58px;height:58px;border-radius:20px;background:linear-gradient(135deg,var(--purple),var(--pink),var(--orange));animation:pulse 1s infinite alternate}
+    @keyframes pulse{to{transform:scale(1.08) rotate(8deg);box-shadow:0 18px 50px rgba(109,43,184,.28)}}
+
+    @media (max-width:1020px){
+      .nav-links{display:none}
+      .menu-btn{display:grid}
+      .nav-actions>.btn{display:none}
+      .mobile-menu{
+        position:fixed;inset:82px 0 auto 0;background:rgba(255,249,241,.97);backdrop-filter:blur(18px);
+        padding:22px 20px 30px;border-bottom:1px solid var(--border);
+        transform:translateY(-130%);transition:.3s;z-index:999;
+      }
+      .mobile-menu.open{transform:none}
+      .mobile-menu a{display:block;padding:14px 4px;font-weight:800;border-bottom:1px solid var(--border)}
+      .mobile-menu .btn{margin-top:16px;width:100%}
+      .hero-grid,.about-grid,.location-grid,.builder-grid{grid-template-columns:1fr}
+      .hero{padding-top:28px}
+      .hero-visual{min-height:560px}
+      .category-grid,.product-grid{grid-template-columns:repeat(2,1fr)}
+      .benefit-grid{grid-template-columns:repeat(2,1fr)}
+      .order-summary{position:relative;top:auto}
+      .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:320px 260px 260px}
+      .gallery-item:first-child{grid-row:1/2;grid-column:1/3}
+      .footer-grid{grid-template-columns:1fr 1fr}
+      .section-head{align-items:start;flex-direction:column}
+    }
+
+    @media (max-width:680px){
+      .container{width:min(calc(100% - 24px),var(--container))}
+      .nav{height:72px}
+      .mobile-menu{inset:72px 0 auto 0}
+      .brand{font-size:18px}
+      .brand-mark{width:38px;height:38px}
+      .hero{padding-bottom:54px}
+      .hero h1{font-size:clamp(50px,16vw,76px)}
+      .hero-copy>p{font-size:16px}
+      .hero-actions .btn{width:100%}
+      .hero-visual{min-height:430px;margin-top:10px}
+      .hero-main{inset:16px 0 36px 20px;border-radius:30px}
+      .floating-card.top{right:0}
+      .floating-card.bottom{left:0}
+      .categories,.favorites,.builder,.about,.reviews,.gallery,.location{padding:64px 0}
+      .category-grid,.product-grid,.review-grid,.benefit-grid{grid-template-columns:1fr}
+      .category-card{height:340px}
+      .product-media{height:280px}
+      .builder-wrap{padding:22px;border-radius:30px}
+      .builder-head{align-items:start;flex-direction:column}
+      .options{gap:8px}
+      .option{font-size:12px}
+      .visual-banner{width:calc(100% - 24px);min-height:500px;border-radius:30px}
+      .visual-banner:after{background:linear-gradient(180deg,rgba(36,21,14,.28),rgba(36,21,14,.83))}
+      .banner-copy{padding:36px 24px;position:absolute;bottom:0}
+      .about-photo{height:420px}
+      .gallery-grid{grid-template-columns:1fr;grid-template-rows:repeat(5,260px)}
+      .gallery-item:first-child{grid-column:auto;grid-row:auto}
+      .location-copy{padding:26px}
+      .map{min-height:360px}
+      .cta-box{padding:52px 18px;border-radius:30px}
+      .footer-grid{grid-template-columns:1fr}
+      .section-head h2,.section-copy h2{font-size:42px}
+      .whatsapp-float{right:14px;bottom:14px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loader" id="loader"><div class="loader-mark" aria-label="Carregando"></div></div>
+
+  <header id="header">
+    <div class="container nav">
+      <a href="#inicio" class="brand" aria-label="Página inicial">
+        <div class="brand-mark"><span>V</span></div>
+        <span data-brand>NATIVA</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Navegação principal">
+        <a href="#inicio">Início</a>
+        <a href="#cardapio">Cardápio</a>
+        <a href="#monte">Monte o seu</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#avaliacoes">Avaliações</a>
+        <a href="#localizacao">Localização</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn-primary wa-link" data-message="Olá! Quero fazer um pedido.">PEDIR AGORA</a>
+        <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#inicio">Início</a>
+    <a href="#cardapio">Cardápio</a>
+    <a href="#monte">Monte o seu</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#avaliacoes">Avaliações</a>
+    <a href="#localizacao">Localização</a>
+    <a class="btn btn-primary wa-link" data-message="Olá! Quero fazer um pedido.">PEDIR AGORA</a>
+  </div>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <span class="eyebrow">Sabor, frescor e personalidade</span>
+          <h1>SEU MOMENTO<br><span class="accent">MAIS REFRESCANTE.</span></h1>
+          <p>Açaí cremoso, combinações irresistíveis e aquele sabor que combina com qualquer hora do dia.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary wa-link" data-message="Olá! Vi o site e quero pedir pelo WhatsApp.">PEDIR PELO WHATSAPP ↗</a>
+            <a class="btn btn-secondary" href="#cardapio">VER CARDÁPIO</a>
+          </div>
+          <div class="badges">
+            <span class="badge">✓ Monte do seu jeito</span>
+            <span class="badge">✓ Ingredientes selecionados</span>
+            <span class="badge">✓ Pedidos rápidos</span>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="orb one"></div>
+          <div class="orb two"></div>
+          <div class="hero-main">
+            <img src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?auto=format&fit=crop&w=1200&q=90" alt="Tigela de açaí com frutas">
+          </div>
+          <div class="floating-card top">
+            <strong>+ de 20 combinações</strong>
+            <span>do clássico ao surpreendente</span>
+          </div>
+          <div class="floating-card bottom">
+            <strong>Feito na hora ✦</strong>
+            <span>cremosidade que dá vontade de repetir</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories" id="cardapio">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Cardápio</span>
+            <h2>ESCOLHA O SEU FAVORITO</h2>
+          </div>
+          <p>Opções para diferentes momentos do dia, sempre com apresentação caprichada, sabores marcantes e liberdade para personalizar.</p>
+        </div>
+
+        <div class="category-grid">
+          <article class="category-card reveal">
+            <img src="https://images.unsplash.com/photo-1615485737651-5806c1a7c99d?auto=format&fit=crop&w=900&q=85" alt="Açaí">
+            <div class="category-content"><h3>Açaí</h3><p>Cremoso, gelado e montado do seu jeito.</p><a class="text-link" href="#favoritos">Ver opções →</a></div>
+          </article>
+          <article class="category-card reveal">
+            <img src="https://images.unsplash.com/photo-1560801619-01d71da0f70c?auto=format&fit=crop&w=900&q=85" alt="Cremes">
+            <div class="category-content"><h3>Cremes</h3><p>Texturas suaves e combinações indulgentes.</p><a class="text-link" href="#favoritos">Ver opções →</a></div>
+          </article>
+          <article class="category-card reveal">
+            <img src="https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?auto=format&fit=crop&w=900&q=85" alt="Sorvetes">
+            <div class="category-content"><h3>Sorvetes</h3><p>Clássicos refrescantes para qualquer hora.</p><a class="text-link" href="#favoritos">Ver opções →</a></div>
+          </article>
+          <article class="category-card reveal">
+            <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=900&q=85" alt="Milk-shake">
+            <div class="category-content"><h3>Milk-shakes</h3><p>Cremosos, intensos e com cobertura generosa.</p><a class="text-link" href="#favoritos">Ver opções →</a></div>
+          </article>
+          <article class="category-card reveal">
+            <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=85" alt="Copos especiais">
+            <div class="category-content"><h3>Copos especiais</h3><p>Camadas, frutas e cremes em versões autorais.</p><a class="text-link" href="#favoritos">Ver opções →</a></div>
+          </article>
+          <article class="category-card reveal">
+            <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=85" alt="Combos">
+            <div class="category-content"><h3>Combos</h3><p>Perfeitos para dividir — ou não.</p><a class="text-link" href="#favoritos">Ver opções →</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="favorites" id="favoritos">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Mais pedidos</span>
+            <h2>OS FAVORITOS DA GALERA</h2>
+          </div>
+          <p>Uma seleção visual para valorizar os campeões de venda e facilitar a escolha de quem quer pedir sem pensar muito.</p>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+          <article class="product reveal" data-product="Açaí Tradicional 500 ml" data-price="24,90">
+            <div class="product-media"><img src="https://images.unsplash.com/photo-1615485737651-5806c1a7c99d?auto=format&fit=crop&w=900&q=85" alt="Açaí tradicional"><span class="product-tag">Mais pedido</span></div>
+            <div class="product-body"><h3>Açaí Tradicional · 500 ml</h3><p>Açaí cremoso e gelado, pronto para você completar como quiser.</p><div class="product-foot"><span class="price">R$ 24,90</span><button class="mini-btn order-product">Pedir</button></div></div>
+          </article>
+
+          <article class="product reveal" data-product="Açaí Tropical" data-price="29,90">
+            <div class="product-media"><img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=900&q=85" alt="Açaí tropical"><span class="product-tag">Favorito</span></div>
+            <div class="product-body"><h3>Açaí Tropical</h3><p>Açaí + morango + banana + granola.</p><div class="product-foot"><span class="price">R$ 29,90</span><button class="mini-btn order-product">Pedir</button></div></div>
+          </article>
+
+          <article class="product reveal" data-product="Açaí Supreme" data-price="34,90">
+            <div class="product-media"><img src="https://images.unsplash.com/photo-1580915411954-282cb1c96e1f?auto=format&fit=crop&w=900&q=85" alt="Açaí supreme"><span class="product-tag">Premium</span></div>
+            <div class="product-body"><h3>Açaí Supreme</h3><p>Açaí + creme + Nutella + leite Ninho.</p><div class="product-foot"><span class="price">R$ 34,90</span><button class="mini-btn order-product">Pedir</button></div></div>
+          </article>
+
+          <article class="product reveal" data-product="Copo Morango Cream" data-price="27,90">
+            <div class="product-media"><img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=85" alt="Copo morango cream"></div>
+            <div class="product-body"><h3>Copo Morango Cream</h3><p>Morango, creme leve e camadas pensadas para equilibrar sabor e textura.</p><div class="product-foot"><span class="price">R$ 27,90</span><button class="mini-btn order-product">Pedir</button></div></div>
+          </article>
+
+          <article class="product reveal" data-product="Milk-shake Especial" data-price="25,90">
+            <div class="product-media"><img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=900&q=85" alt="Milk-shake especial"></div>
+            <div class="product-body"><h3>Milk-shake Especial</h3><p>Milk-shake cremoso com finalização especial da casa.</p><div class="product-foot"><span class="price">R$ 25,90</span><button class="mini-btn order-product">Pedir</button></div></div>
+          </article>
+
+          <article class="product reveal" data-product="Combo Duplo" data-price="44,90">
+            <div class="product-media"><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=85" alt="Combo duplo"><span class="product-tag">Bom para dividir</span></div>
+            <div class="product-body"><h3>Combo Duplo</h3><p>Duas opções especiais para compartilhar o melhor momento.</p><div class="product-foot"><span class="price">R$ 44,90</span><button class="mini-btn order-product">Pedir</button></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="builder" id="monte">
+      <div class="container">
+        <div class="builder-wrap reveal">
+          <div class="builder-head">
+            <div>
+              <span class="eyebrow">Experiência interativa</span>
+              <h2>MONTE SEU AÇAÍ</h2>
+            </div>
+            <p>Escolha tamanho, base, complementos e extras. O resumo e o valor estimado são atualizados automaticamente.</p>
+          </div>
+
+          <div class="builder-grid">
+            <div class="steps">
+              <div class="step">
+                <div class="step-title"><span class="step-num">1</span>Escolha o tamanho</div>
+                <div class="options" data-group="size">
+                  <button class="option" data-value="300 ml" data-price="18.9">300 ml</button>
+                  <button class="option active" data-value="500 ml" data-price="24.9">500 ml</button>
+                  <button class="option" data-value="700 ml" data-price="30.9">700 ml</button>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="step-title"><span class="step-num">2</span>Escolha a base</div>
+                <div class="options" data-group="base">
+                  <button class="option active" data-value="Açaí" data-price="0">Açaí</button>
+                  <button class="option" data-value="Cupuaçu" data-price="2">Cupuaçu +R$2</button>
+                  <button class="option" data-value="Creme" data-price="2">Creme +R$2</button>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="step-title"><span class="step-num">3</span>Complementos <small style="opacity:.55;font-weight:600">(até 3 inclusos)</small></div>
+                <div class="options multi" data-group="complements">
+                  <button class="option active" data-value="Banana" data-price="0">Banana</button>
+                  <button class="option active" data-value="Morango" data-price="0">Morango</button>
+                  <button class="option active" data-value="Granola" data-price="0">Granola</button>
+                  <button class="option" data-value="Leite Ninho" data-price="1.5">Leite Ninho</button>
+                  <button class="option" data-value="Paçoca" data-price="1.5">Paçoca</button>
+                  <button class="option" data-value="Confete" data-price="1.5">Confete</button>
+                  <button class="option" data-value="Coco" data-price="1.5">Coco</button>
+                  <button class="option" data-value="Leite condensado" data-price="1.5">Leite condensado</button>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="step-title"><span class="step-num">4</span>Extras</div>
+                <div class="options multi" data-group="extras">
+                  <button class="option" data-value="Nutella" data-price="5">Nutella +R$5</button>
+                  <button class="option" data-value="Creme de pistache" data-price="6">Pistache +R$6</button>
+                  <button class="option" data-value="Kinder" data-price="5">Kinder +R$5</button>
+                  <button class="option" data-value="Oreo" data-price="4">Oreo +R$4</button>
+                </div>
+              </div>
+            </div>
+
+            <aside class="order-summary">
+              <h3>SEU PEDIDO</h3>
+              <div class="summary-row"><span>Tamanho</span><strong id="sumSize">500 ml</strong></div>
+              <div class="summary-row"><span>Base</span><strong id="sumBase">Açaí</strong></div>
+              <div class="summary-row" style="display:block"><span>Complementos</span><div class="summary-list" id="sumComplements">Banana, Morango, Granola</div></div>
+              <div class="summary-row" style="display:block"><span>Extras</span><div class="summary-list" id="sumExtras">Nenhum extra</div></div>
+              <div class="estimate"><div><small>Valor estimado</small><strong id="sumPrice">R$ 24,90</strong></div></div>
+              <a class="btn btn-primary" id="builderWhatsapp">ENVIAR PEDIDO PELO WHATSAPP ↗</a>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="visual-banner reveal">
+      <img src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1800&q=90" alt="Frutas frescas">
+      <div class="banner-copy">
+        <h2>DO JEITO QUE VOCÊ GOSTA.</h2>
+        <p>Escolha seus complementos favoritos e crie uma combinação só sua — mais clássica, mais frutada ou completamente indulgente.</p>
+        <a class="btn btn-primary" href="#monte">MONTAR AGORA</a>
+      </div>
+    </section>
+
+    <section class="about" id="sobre">
+      <div class="container about-grid">
+        <div class="about-photo reveal">
+          <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1100&q=85" alt="Preparo cuidadoso de alimentos">
+        </div>
+        <div class="section-copy reveal">
+          <span class="eyebrow">Nossa essência</span>
+          <h2>FEITO PARA DEIXAR SEU DIA MELHOR.</h2>
+          <p>Na <span data-brand>NATIVA</span>, cada pedido é pensado para ser bonito, saboroso e bem feito. A gente escolhe ingredientes de qualidade, cuida de cada etapa do preparo e acredita que atendimento bom também faz parte da experiência.</p>
+          <p>Do primeiro contato até a última colherada, a ideia é simples: entregar um momento gostoso, leve e com personalidade.</p>
+
+          <div class="benefit-grid">
+            <div class="benefit"><div class="benefit-icon">⚡</div><h3>Pedido rápido</h3><p>Peça direto pelo WhatsApp, sem complicação.</p></div>
+            <div class="benefit"><div class="benefit-icon">🥝</div><h3>Ingredientes selecionados</h3><p>Qualidade em cada camada e combinação.</p></div>
+            <div class="benefit"><div class="benefit-icon">✨</div><h3>Monte como quiser</h3><p>Várias opções para deixar o pedido com a sua cara.</p></div>
+            <div class="benefit"><div class="benefit-icon">📍</div><h3>Fácil de encontrar</h3><p>Veja endereço, horário e rota em poucos cliques.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews" id="avaliacoes">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Avaliações</span>
+            <h2>QUEM PROVA, VOLTA.</h2>
+          </div>
+          <p>Depoimentos demonstrativos, escritos de forma realista para mostrar como a prova social pode aparecer no site da marca.</p>
+        </div>
+
+        <div class="review-grid">
+          <article class="review reveal">
+            <div class="stars">★★★★★</div>
+            <blockquote>“O açaí chegou muito bem montado e os complementos estavam ótimos. Dá para ver o cuidado no pedido.”</blockquote>
+            <div class="review-person"><div class="avatar">M</div><div><strong>Mariana S.</strong><span>Cliente recorrente</span></div></div>
+          </article>
+          <article class="review reveal">
+            <div class="stars">★★★★★</div>
+            <blockquote>“Gostei bastante da cremosidade e da variedade. O pedido pelo WhatsApp foi bem rápido.”</blockquote>
+            <div class="review-person"><div class="avatar">R</div><div><strong>Rafael M.</strong><span>Pedido para viagem</span></div></div>
+          </article>
+          <article class="review reveal">
+            <div class="stars">★★★★★</div>
+            <blockquote>“As frutas vieram bonitas e o copo estava bem servido. Já pedi de novo e manteve o padrão.”</blockquote>
+            <div class="review-person"><div class="avatar">C</div><div><strong>Camila R.</strong><span>Cliente local</span></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery" id="galeria">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Galeria</span>
+            <h2>UM CARDÁPIO QUE COMEÇA PELOS OLHOS.</h2>
+          </div>
+          <p>Fotografia grande, composição editorial e pouco ruído visual para deixar o produto assumir o protagonismo.</p>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?auto=format&fit=crop&w=1200&q=85" alt="Açaí com frutas"></div>
+          <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1615485737651-5806c1a7c99d?auto=format&fit=crop&w=900&q=85" alt="Tigela de açaí"></div>
+          <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=900&q=85" alt="Frutas frescas"></div>
+          <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=900&q=85" alt="Milk-shake"></div>
+          <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=85" alt="Preparo de alimentos"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="location" id="localizacao">
+      <div class="container">
+        <div class="location-grid reveal">
+          <div class="location-copy">
+            <span class="eyebrow">Visite a gente</span>
+            <h2 data-brand>NATIVA</h2>
+
+            <div class="location-line">
+              <small>Endereço</small>
+              <strong id="addressText">Av. Principal, 245 · Centro · <span data-city>Taboão da Serra</span></strong>
+            </div>
+
+            <div class="location-line">
+              <small>Horário</small>
+              <strong>Segunda a domingo · 12h às 23h</strong>
+            </div>
+
+            <div class="location-line">
+              <small>Instagram</small>
+              <strong id="instagramText">@nativa</strong>
+            </div>
+
+            <div class="location-actions">
+              <a class="btn btn-dark" id="mapLink" target="_blank" rel="noopener">VER NO MAPA ↗</a>
+              <a class="btn btn-secondary wa-link" data-message="Olá! Quero falar com vocês.">CHAMAR NO WHATSAPP</a>
+            </div>
+          </div>
+
+          <div class="map" aria-label="Mapa demonstrativo">
+            <div class="map-pin"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container">
+        <div class="cta-box reveal">
+          <h2>BATEU A VONTADE?</h2>
+          <p>Monte seu pedido e chama a gente no WhatsApp.</p>
+          <a class="btn wa-link" data-message="Olá! Bateu a vontade 😄 Quero fazer um pedido.">PEDIR AGORA ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#inicio" class="brand" style="color:white">
+            <div class="brand-mark"><span>V</span></div>
+            <span data-brand>NATIVA</span>
+          </a>
+          <p>Açaí, cremes, sorvetes e sobremesas com apresentação caprichada e liberdade para montar do seu jeito.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navegação</h4>
+          <a href="#cardapio">Cardápio</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#localizacao">Localização</a>
+          <a href="#avaliacoes">Avaliações</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contato</h4>
+          <a class="wa-link" data-message="Olá! Quero falar com vocês.">WhatsApp</a>
+          <a id="instagramLink" target="_blank" rel="noopener">Instagram</a>
+          <span data-city>Taboão da Serra</span>
+        </div>
+
+        <div class="footer-col">
+          <h4>Horário</h4>
+          <span>Segunda a domingo</span>
+          <span>12h às 23h</span>
+          <span>Pedidos até 22h45</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 <span data-brand>NATIVA</span>. Site demonstrativo.</span>
+        <span>Experiência digital criada para apresentação comercial.</span>
+      </div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float wa-link" aria-label="Falar pelo WhatsApp" data-message="Olá! Vi o site e quero fazer um pedido.">✆</a>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const config = {
+      brand: params.get('nome') || 'NATIVA',
+      city: params.get('cidade') || 'Taboão da Serra',
+      whatsapp: (params.get('whatsapp') || '5511999999999').replace(/\D/g,''),
+      instagram: (params.get('instagram') || 'nativa').replace(/^@/,'')
+    };
+
+    document.title = config.brand + ' · Açaí, Sorvetes e Sobremesas';
+    document.querySelectorAll('[data-brand]').forEach(el => el.textContent = config.brand);
+    document.querySelectorAll('[data-city]').forEach(el => el.textContent = config.city);
+
+    const waURL = message => `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message)}`;
+    document.querySelectorAll('.wa-link').forEach(el => {
+      const msg = el.dataset.message || `Olá! Quero falar com a ${config.brand}.`;
+      el.href = waURL(msg);
+      el.target = '_blank';
+      el.rel = 'noopener';
+    });
+
+    const instagramURL = `https://instagram.com/${config.instagram}`;
+    document.getElementById('instagramText').textContent = '@' + config.instagram;
+    document.getElementById('instagramLink').href = instagramURL;
+    document.getElementById('instagramLink').textContent = '@' + config.instagram;
+
+    const mapQuery = encodeURIComponent(`${config.brand}, ${config.city}`);
+    document.getElementById('mapLink').href = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+
+    const header = document.getElementById('header');
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 18));
+
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      document.body.classList.toggle('menu-open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.textContent = open ? '✕' : '☰';
+    });
+
+    document.querySelectorAll('.mobile-menu a').forEach(a => a.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      document.body.classList.remove('menu-open');
+      menuBtn.setAttribute('aria-expanded','false');
+      menuBtn.textContent = '☰';
+    }));
+
+    const state = {
+      size: {value:'500 ml', price:24.9},
+      base: {value:'Açaí', price:0},
+      complements: [
+        {value:'Banana', price:0},
+        {value:'Morango', price:0},
+        {value:'Granola', price:0}
+      ],
+      extras: []
+    };
+
+    function money(n){
+      return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    }
+
+    function updateSummary(){
+      document.getElementById('sumSize').textContent = state.size.value;
+      document.getElementById('sumBase').textContent = state.base.value;
+      document.getElementById('sumComplements').textContent =
+        state.complements.length ? state.complements.map(i=>i.value).join(', ') : 'Nenhum complemento';
+      document.getElementById('sumExtras').textContent =
+        state.extras.length ? state.extras.map(i=>i.value).join(', ') : 'Nenhum extra';
+
+      let total = state.size.price + state.base.price;
+      const complementExtraPrice = Math.max(0, state.complements.length - 3) * 1.5;
+      total += complementExtraPrice;
+      total += state.extras.reduce((sum,item)=>sum+item.price,0);
+
+      document.getElementById('sumPrice').textContent = money(total);
+
+      const message =
+`Olá! Quero fazer um pedido na ${config.brand}:
+
+• Tamanho: ${state.size.value}
+• Base: ${state.base.value}
+• Complementos: ${state.complements.length ? state.complements.map(i=>i.value).join(', ') : 'Nenhum'}
+• Extras: ${state.extras.length ? state.extras.map(i=>i.value).join(', ') : 'Nenhum'}
+
+Valor estimado: ${money(total)}
+
+Pode confirmar disponibilidade e valor final para mim?`;
+
+      document.getElementById('builderWhatsapp').href = waURL(message);
+      document.getElementById('builderWhatsapp').target = '_blank';
+      document.getElementById('builderWhatsapp').rel = 'noopener';
+    }
+
+    document.querySelectorAll('.options').forEach(group => {
+      const groupName = group.dataset.group;
+      const isMulti = group.classList.contains('multi');
+
+      group.querySelectorAll('.option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = {value:btn.dataset.value,price:Number(btn.dataset.price||0)};
+
+          if(!isMulti){
+            group.querySelectorAll('.option').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            state[groupName] = item;
+          } else {
+            btn.classList.toggle('active');
+            state[groupName] = [...group.querySelectorAll('.option.active')].map(b => ({
+              value:b.dataset.value,
+              price:Number(b.dataset.price||0)
+            }));
+          }
+          updateSummary();
+        });
+      });
+    });
+
+    document.querySelectorAll('.order-product').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.product');
+        const product = card.dataset.product;
+        const price = card.dataset.price;
+        const msg = `Olá! Quero pedir o produto "${product}" por R$ ${price}. Pode confirmar disponibilidade?`;
+        window.open(waURL(msg),'_blank','noopener');
+      });
+    });
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').classList.add('hide'), 350);
+    });
+
+    updateSummary();
+  </script>
+</body>
+</html>
