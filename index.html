@@ -662,7 +662,7 @@
             <span class="eyebrow">Avaliações</span>
             <h2>QUEM PROVA, VOLTA.</h2>
           </div>
-          <p>Depoimentos demonstrativos, escritos de forma realista para mostrar como a prova social pode aparecer no site da marca.</p>
+          <p>Algumas experiências de clientes que representam o cuidado, o sabor e a qualidade que queremos entregar em cada pedido.</p>
         </div>
 
         <div class="review-grid">
@@ -714,7 +714,7 @@
 
             <div class="location-line">
               <small>Endereço</small>
-              <strong id="addressText">Av. Principal, 245 · Centro · <span data-city>Taboão da Serra</span></strong>
+              <strong id="addressText"><span data-address>Endereço da unidade</span> · <span data-city>Sua cidade</span></strong>
             </div>
 
             <div class="location-line">
@@ -724,7 +724,7 @@
 
             <div class="location-line">
               <small>Instagram</small>
-              <strong id="instagramText">@nativa</strong>
+              <strong id="instagramText">@seuinstagram</strong>
             </div>
 
             <div class="location-actions">
@@ -786,8 +786,8 @@
       </div>
 
       <div class="footer-bottom">
-        <span>© 2026 <span data-brand>NATIVA</span>. Site demonstrativo.</span>
-        <span>Experiência digital criada para apresentação comercial.</span>
+        <span>© 2026 <span data-brand>NATIVA</span>. Todos os direitos reservados.</span>
+        <span>Conteúdo ilustrativo para demonstração.</span>
       </div>
     </div>
   </footer>
@@ -798,14 +798,16 @@
     const params = new URLSearchParams(window.location.search);
     const config = {
       brand: params.get('nome') || 'NATIVA',
-      city: params.get('cidade') || 'Taboão da Serra',
+      city: params.get('cidade') || 'Sua cidade',
+      address: params.get('endereco') || 'Endereço da unidade',
       whatsapp: (params.get('whatsapp') || '5511999999999').replace(/\D/g,''),
-      instagram: (params.get('instagram') || 'nativa').replace(/^@/,'')
+      instagram: (params.get('instagram') || 'seuinstagram').replace(/^@/,'')
     };
 
     document.title = config.brand + ' · Açaí, Sorvetes e Sobremesas';
     document.querySelectorAll('[data-brand]').forEach(el => el.textContent = config.brand);
     document.querySelectorAll('[data-city]').forEach(el => el.textContent = config.city);
+    document.querySelectorAll('[data-address]').forEach(el => el.textContent = config.address);
 
     const waURL = message => `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message)}`;
     document.querySelectorAll('.wa-link').forEach(el => {
@@ -820,7 +822,7 @@
     document.getElementById('instagramLink').href = instagramURL;
     document.getElementById('instagramLink').textContent = '@' + config.instagram;
 
-    const mapQuery = encodeURIComponent(`${config.brand}, ${config.city}`);
+    const mapQuery = encodeURIComponent(`${config.address}, ${config.city}`);
     document.getElementById('mapLink').href = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
     const header = document.getElementById('header');
