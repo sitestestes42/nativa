@@ -319,7 +319,7 @@
     .footer-brand p{color:#bdaa9f;max-width:350px;line-height:1.7}
     .footer-col h4{font:800 14px Manrope,sans-serif;margin:0 0 16px}
     .footer-col a,.footer-col span{display:block;color:#bdaa9f;font-size:13px;margin:10px 0}
-    .footer-bottom{margin-top:38px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#8f7c72;font-size:12px}
+    .footer-bottom{margin-top:38px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:center;text-align:center;gap:16px;flex-wrap:wrap;color:#8f7c72;font-size:12px}
 
     .whatsapp-float{
       position:fixed;right:22px;bottom:22px;z-index:1200;width:58px;height:58px;border-radius:50%;
@@ -655,14 +655,14 @@
       </div>
     </section>
 
-    <section class="reviews" id="avaliacoes">
+    <section class="reviews" id="avaliacoes" data-demo-reviews>
       <div class="container">
         <div class="section-head reveal">
           <div>
             <span class="eyebrow">Avaliações</span>
             <h2>QUEM PROVA, VOLTA.</h2>
           </div>
-          <p>Algumas experiências de clientes que representam o cuidado, o sabor e a qualidade que queremos entregar em cada pedido.</p>
+          <p>Avaliações ilustrativas.</p>
         </div>
 
         <div class="review-grid">
@@ -786,7 +786,6 @@
       </div>
 
       <div class="footer-bottom">
-        <span>© 2026 <span data-brand>NATIVA</span>. Todos os direitos reservados.</span>
         <span>Conteúdo ilustrativo para demonstração.</span>
       </div>
     </div>
@@ -801,13 +800,16 @@
       city: params.get('cidade') || 'Sua cidade',
       address: params.get('endereco') || 'Endereço da unidade',
       whatsapp: (params.get('whatsapp') || '5511999999999').replace(/\D/g,''),
-      instagram: (params.get('instagram') || 'seuinstagram').replace(/^@/,'')
+      instagram: (params.get('instagram') || 'seuinstagram').replace(/^@/,''),
+      showReviews: !['0','false','nao','não'].includes((params.get('avaliacoes') || '1').toLowerCase())
     };
 
     document.title = config.brand + ' · Açaí, Sorvetes e Sobremesas';
     document.querySelectorAll('[data-brand]').forEach(el => el.textContent = config.brand);
     document.querySelectorAll('[data-city]').forEach(el => el.textContent = config.city);
     document.querySelectorAll('[data-address]').forEach(el => el.textContent = config.address);
+    const reviewsSection = document.querySelector('[data-demo-reviews]');
+    if (reviewsSection && !config.showReviews) reviewsSection.remove();
 
     const waURL = message => `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message)}`;
     document.querySelectorAll('.wa-link').forEach(el => {
