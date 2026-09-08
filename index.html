@@ -662,7 +662,7 @@
             <span class="eyebrow">Avaliações</span>
             <h2>QUEM PROVA, VOLTA.</h2>
           </div>
-          <p>Avaliações ilustrativas.</p>
+          <p>Exemplos de avaliações para composição visual da demonstração.</p>
         </div>
 
         <div class="review-grid">
@@ -799,30 +799,54 @@
       brand: params.get('nome') || 'NATIVA',
       city: params.get('cidade') || 'Sua cidade',
       address: params.get('endereco') || 'Endereço da unidade',
-      whatsapp: (params.get('whatsapp') || '5511999999999').replace(/\D/g,''),
+      whatsapp: (params.get('whatsapp') || '').replace(/\D/g,''),
       instagram: (params.get('instagram') || 'seuinstagram').replace(/^@/,''),
-      showReviews: !['0','false','nao','não'].includes((params.get('avaliacoes') || '1').toLowerCase())
+      showReviews: ['1','true','sim'].includes((params.get('avaliacoes') || '0').toLowerCase())
     };
 
     document.title = config.brand + ' · Açaí, Sorvetes e Sobremesas';
     document.querySelectorAll('[data-brand]').forEach(el => el.textContent = config.brand);
+    document.querySelectorAll('.brand-mark span').forEach(el => {
+      el.textContent = (config.brand.trim().charAt(0) || 'N').toUpperCase();
+    });
     document.querySelectorAll('[data-city]').forEach(el => el.textContent = config.city);
     document.querySelectorAll('[data-address]').forEach(el => el.textContent = config.address);
     const reviewsSection = document.querySelector('[data-demo-reviews]');
-    if (reviewsSection && !config.showReviews) reviewsSection.remove();
+    if (reviewsSection && !config.showReviews) {
+      reviewsSection.remove();
+      document.querySelectorAll('a[href="#avaliacoes"]').forEach(link => link.remove());
+    }
 
-    const waURL = message => `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message)}`;
+    const waURL = message => config.whatsapp
+      ? `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message)}`
+      : '#localizacao';
+
     document.querySelectorAll('.wa-link').forEach(el => {
       const msg = el.dataset.message || `Olá! Quero falar com a ${config.brand}.`;
       el.href = waURL(msg);
-      el.target = '_blank';
-      el.rel = 'noopener';
+
+      if (config.whatsapp) {
+        el.target = '_blank';
+        el.rel = 'noopener';
+      } else {
+        el.removeAttribute('target');
+        el.removeAttribute('rel');
+      }
     });
 
-    const instagramURL = `https://instagram.com/${config.instagram}`;
-    document.getElementById('instagramText').textContent = '@' + config.instagram;
-    document.getElementById('instagramLink').href = instagramURL;
-    document.getElementById('instagramLink').textContent = '@' + config.instagram;
+    const instagramText = document.getElementById('instagramText');
+    const instagramLink = document.getElementById('instagramLink');
+
+    if (config.instagram && config.instagram !== 'seuinstagram') {
+      const instagramURL = `https://instagram.com/${config.instagram}`;
+      instagramText.textContent = '@' + config.instagram;
+      instagramLink.href = instagramURL;
+      instagramLink.textContent = '@' + config.instagram;
+    } else {
+      instagramText.textContent = 'Instagram da marca';
+      instagramLink.removeAttribute('href');
+      instagramLink.textContent = 'Instagram';
+    }
 
     const mapQuery = encodeURIComponent(`${config.address}, ${config.city}`);
     document.getElementById('mapLink').href = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
@@ -889,9 +913,16 @@ Valor estimado: ${money(total)}
 
 Pode confirmar disponibilidade e valor final para mim?`;
 
-      document.getElementById('builderWhatsapp').href = waURL(message);
-      document.getElementById('builderWhatsapp').target = '_blank';
-      document.getElementById('builderWhatsapp').rel = 'noopener';
+      const builderWhatsapp = document.getElementById('builderWhatsapp');
+      builderWhatsapp.href = waURL(message);
+
+      if (config.whatsapp) {
+        builderWhatsapp.target = '_blank';
+        builderWhatsapp.rel = 'noopener';
+      } else {
+        builderWhatsapp.removeAttribute('target');
+        builderWhatsapp.removeAttribute('rel');
+      }
     }
 
     document.querySelectorAll('.options').forEach(group => {
@@ -924,7 +955,11 @@ Pode confirmar disponibilidade e valor final para mim?`;
         const product = card.dataset.product;
         const price = card.dataset.price;
         const msg = `Olá! Quero pedir o produto "${product}" por R$ ${price}. Pode confirmar disponibilidade?`;
-        window.open(waURL(msg),'_blank','noopener');
+        if (config.whatsapp) {
+          window.open(waURL(msg),'_blank','noopener');
+        } else {
+          document.getElementById('localizacao').scrollIntoView({behavior:'smooth'});
+        }
       });
     });
 
